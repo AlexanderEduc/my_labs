@@ -14,3 +14,12 @@ function cambiarFondo() {
         document.body.style.backgroundColor = "lightblue";
     }
 }
+
+function borrar() {
+    var lista = document.getElementById("lista");
+    var elementos = lista.getElementsByTagName("li");
+    
+    if (elementos.length > 0) {
+        lista.removeChild(elementos[elementos.length - 1]);
+    }
+}
