@@ -24,7 +24,7 @@ namespace backend_lab_C28559.Repositories
         public bool CreateCountry(CountryModel country)
         {
             using var connection = new SqlConnection(_connectionString);
-            var query = @"INSERT INFO [dbo].[Country] ([Name],[Continent],[Language])
+            var query = @"INSERT INTO [dbo].[Country] ([Name],[Continent],[Language])
                             VALUES(@Name, @Continent, @Language)";
             var affectedRows = connection.Execute(query, new
             {

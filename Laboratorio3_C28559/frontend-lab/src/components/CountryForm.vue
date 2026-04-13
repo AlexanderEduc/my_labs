@@ -2,9 +2,10 @@
     <div class="d-flex justify-content-center align-items-center vh-100">
         <div class="card p-4 shadow" style="max-width: 400px; width: 100%">
             <h3 class="text-center">Formulario de creación de países</h3>
+
             <form @submit.prevent="saveCountry">
                 <div class="form-group">
-                    <label for="nombre">Nombre:</label>
+                    <label for="name">Nombre:</label>
                     <input
                         v-model="formData.Name"
                         type="text"
@@ -13,13 +14,14 @@
                         required
                     />
                 </div>
+
                 <div class="form-group">
-                    <label for="continente">Continente</label>
+                    <label for="continente">Continente:</label>
                     <select
                         v-model="formData.Continent"
                         id="continente"
-                        required
                         class="form-control"
+                        required
                     >
                         <option value="" disabled>Seleccione un continente</option>
                         <option>África</option>
@@ -30,6 +32,7 @@
                         <option>Antártida</option>
                     </select>
                 </div>
+
                 <div class="form-group">
                     <label for="idioma">Idioma:</label>
                     <input
@@ -40,7 +43,8 @@
                         required
                     />
                 </div>
-                <div>
+
+                <div class="mt-3">
                     <button type="submit" class="btn btn-success btn-block">
                         Guardar
                     </button>
@@ -53,33 +57,36 @@
 <script>
 import axios from "axios";
 
-    export default {
-        data() {
-            return {
-                formData: { Name: "", Continent: "", Language: "" },
-            };
-        },
-        methods: {
-            saveCountry() {
-                console.log("Datos a guardar:", this.formData);
-                axios
-                    .post("https://localhost:7143/api/Country", {
-                        Name: this.formData.Name,
-                        Continent: this.formData.Continent,
-                        Language: this.formData.Language,
-                    })
-                    .then(function (response) {
-                        console.log(response);
-                        window.location.href = "/";
-                    })
-                    .catch(function (error) {
-                        console.log(error);
-                    })
+export default {
+    data() {
+        return {
+            formData: { 
+                Name: "", 
+                Continent: "", 
+                Language: "",
             },
+        };
+    },
+    methods: {
+        async saveCountry() {
+            try {
+                console.log("Datos a guardar:", this.formData);
+
+                const response = await axios.post("http://localhost:5050/api/country", {
+                    name: this.formData.Name,
+                    continent: this.formData.Continent,
+                    language: this.formData.Language,
+                });
+
+                console.log("Respuesta POST:", response.data);
+                window.location.href = "/";
+            } catch (error) {
+                console.log("Error al guardar país:", error);
+            }
         },
-    };
+    },
+};
 </script>
 
 <style lang="scss" scoped>
-
 </style>
