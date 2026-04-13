@@ -1,17 +1,26 @@
 <template>
     <div class="container mt-5">
         <h1 class="display-4 text-center">Lista de países</h1>
+        <div class="row justify-content-end">
+            <div class="col-2">
+                <a href="/country">
+                    <button type="button" class="btn btn-outline-secodary float-right">
+                        Agregar país
+                    </button>
+                </a>
+            </div>
+        </div>
         <table
             class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
         >
-            <tread>
+            <thead>
                 <tr>
                     <th>Nombre</th>
                     <th>Continente</th>
                     <th>Idioma</th>
                     <th>Acciones</th>
                 </tr>
-            </tread>
+            </thead>
             <tbody>
                 <tr v-for="(country, index) of countries" :key="index">
                     <td>{{ country.name }}</td>
@@ -30,28 +39,44 @@
             </tbody>
         </table>
     </div>
+
+
 </template>
 
 <script>
-    export default {
-        name: "CountriesList",
-        data() {
-            return {
-                countries: [
-                    { name: "Costa Rica", continent: "América", language: "Español" },
-                    { name: "Japón", continent: "Asia", language: "Japonés" },
-                    { name: "Corea del Sur", continent: "Asia", language: "Coreano" },
-                    { name: "Italia", continent: "Europa", language: "Italiano" },
-                    { name: "Alemania", continent: "Europa", language: "Alemán" },
-                ],
-            };
+import axios from "axios";
+
+export default {
+    name: "CountriesList",
+    data() {
+        return {
+            countries: [
+                { name: "Costa Rica", continent: "América", language: "Español" },
+                { name: "Japón", continent: "Asia", language: "Japonés" },
+                { name: "Corea del Sur", continent: "Asia", language: "Coreano" },
+                { name: "Italia", continent: "Europa", language: "Italiano" },
+                { name: "Alemania", continent: "Europa", language: "Alemán" },
+            ],
+        };
+    },
+    methods: {
+        deleteCountry(index) {
+            this.countries.splice(index, 1); // .splice elimina 1 elemento del arreglo en la posición indicada
         },
-        methods: {
-            deleteCountry(index) {
-                this.countries.splice(index, 1); // .splice elimina 1 elemento del arreglo en la posición indicada
-            },
-        }, 
-    }
+        async getCountries() {
+            try {
+                const response = await axios.get("https://localhost:7143/api/country");
+                this.countries = response.data;
+            } catch (error) {
+                console.error("Error al obtener países:", error);
+            }
+        },
+
+    }, 
+    created: function() {
+        this.getCountries();
+    },
+};
  
 </script>
 
